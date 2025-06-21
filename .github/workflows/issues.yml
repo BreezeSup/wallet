@@ -1,0 +1,115 @@
+name: Create 100 Custom Issues
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  post_issues:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Post 100 Customized Issues with Metadata
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issues = [
+              { "title": "🐛 Bug: Extension crashes when opening pop-up", "body": "MetaMask extension unexpectedly crashes when users open the extension pop-up on Chrome. Logs show Renderer process killed error.", "labels": ["bug", "crash", "extension"] },
+              { "title": "🐛 Bug: Incorrect balance for ERC‑20 tokens", "body": "Some ERC‑20 tokens display zero balance even though the blockchain shows the correct balance. Investigate token list integration.", "labels": ["bug", "token", "balance"] },
+              { "title": "💡 Feature: Auto-swap slippage limit slider", "body": "Add a slider UI to allow users to set custom slippage limits for token swaps directly within the extension.", "labels": ["feature", "swap", "UI"] },
+              { "title": "🔐 Bug: Session persists after logout", "body": "Closing MetaMask and reopening retains the session despite user logging out. Tokens remain accessible until browser restart.", "labels": ["bug", "security", "session"] },
+              { "title": "📱 Feature: QR code login support", "body": "Allow users to log into MetaMask mobile via scanning a QR code from the desktop extension securely.", "labels": ["feature", "mobile", "login"] },
+              { "title": "🐛 Bug: Failed network switch on Polygon", "body": "Switching to Polygon network sometimes fails silently, leaving the UI stuck on loading state.", "labels": ["bug", "network", "Polygon"] },
+              { "title": "💬 Feature: In-app messaging for transaction status", "body": "Add contextual messaging within the extension to show real-time transaction status (pending, confirmed, failed).", "labels": ["feature", "UX", "transactions"] },
+              { "title": "🐛 Bug: Gas estimate too low on Layer 2", "body": "Gas estimation often underestimates fees on Layer 2 networks, causing failed transactions due to insufficient gas.", "labels": ["bug", "gas", "layer2"] },
+              { "title": "🛡️ Feature: Phishing warning for known malicious sites", "body": "Display a warning banner when users visit domains identified as phishing sites in MetaMask browser.", "labels": ["feature", "security", "phishing"] },
+              { "title": "📊 Feature: Portfolio tracker in extension", "body": "Enable users to view aggregated portfolio value across networks and tokens directly in the MetaMask popup.", "labels": ["feature", "portfolio", "UI"] },
+              { "title": "🐛 Bug: Token approval defaults incorrect allowance", "body": "Approving spending allowance often defaults to extremely high values (e.g., unlimited) without warning.", "labels": ["bug", "token", "security"] },
+              { "title": "💬 Feature: Support multicast RPC endpoints", "body": "Allow configuration of multiple RPC endpoints with failover logic for improved reliability.", "labels": ["feature", "network", "rpc"] },
+              { "title": "🐛 Bug: Mobile push notifications delayed", "body": "Transaction push notifications on MetaMask mobile arrive several minutes late, affecting UX.", "labels": ["bug", "mobile", "notifications"] },
+              { "title": "📚 Docs: Clarify hardware wallet recovery process", "body": "Documentation does not clearly outline how users can recover hardware wallets via MetaMask.", "labels": ["documentation", "hardware-wallet"] },
+              { "title": "💡 Feature: Dark mode toggle in settings", "body": "Add a dark mode theme option for the MetaMask extension and mobile app.", "labels": ["feature", "UI", "theme"] },
+              { "title": "🐛 Bug: Custom RPC entry not saved", "body": "User-added custom RPC network disappears after browser restart or extension update.", "labels": ["bug", "network", "persistence"] },
+              { "title": "📱 Feature: Biometric unlock on mobile", "body": "Enable Touch ID / Face ID unlock option for MetaMask mobile to improve convenience.", "labels": ["feature", "security", "mobile"] },
+              { "title": "🐛 Bug: Token list import fails with large lists", "body": "Importing large third-party token lists causes timeouts and incomplete token display.", "labels": ["bug", "performance", "tokens"] },
+              { "title": "🌐 Feature: Domain-based dApp permissions", "body": "Allow users to manage permissions (e.g., spending, viewing account) per dApp domain instead of per session.", "labels": ["feature", "security", "permissions"] },
+              { "title": "🐛 Bug: Misspelled network names in settings", "body": "Certain networks display names with typos in the network dropdown (e.g., 'Binacne Smart Chain').", "labels": ["bug", "UI", "network"] },
+              { "title": "🛠 Chore: Update dependency versions", "body": "Upgrade outdated extension libraries and dependencies to patch security vulnerabilities.", "labels": ["chore", "dependency"] },
+              { "title": "📄 Docs: Add guide for swap feature", "body": "Create a user guide detailing the swap process, including slippage, routing, and pricing.", "labels": ["documentation", "swap"] },
+              { "title": "🐛 Bug: Hardware wallet sign button unresponsive", "body": "Using Ledger hardware wallet results in unresponsive 'Sign' button, requiring refresh.", "labels": ["bug", "hardware-wallet"] },
+              { "title": "🔌 Feature: Extension tray icon notifications", "body": "Add tray notifications on desktop when transactions are confirmed or fail.", "labels": ["feature", "notifications", "desktop"] },
+              { "title": "🐛 Bug: Incorrect chain ID detection", "body": "Detection of network chain ID fails on some custom RPCs, causing failed txs.", "labels": ["bug", "network", "rpc"] },
+              { "title": "💬 Feature: Transaction memo field", "body": "Allow users to add notes/memos to transactions stored locally through MetaMask.", "labels": ["feature", "UX", "transactions"] },
+              { "title": "🐛 Bug: Notification sound does not play", "body": "MetaMask desktop notifications do not play sound, conflicting with user settings.", "labels": ["bug", "notifications"] },
+              { "title": "💡 Feature: Swap price comparison", "body": "Show price quotes across multiple DEXes to help users get best swap rates.", "labels": ["feature", "swap", "DEX"] },
+              { "title": "🐛 Bug: Gas slider jumps to max automatically", "body": "Gas slider sometimes resets to maximum value unexpectedly.", "labels": ["bug", "UI", "gas"] },
+              { "title": "📦 Feature: Import token from contract address", "body": "Add UI to manually import a token using its contract address.", "labels": ["feature", "tokens", "UI"] },
+              { "title": "🔥 Feature: Speed up fee option", "body": "Allow users to speed up pending transactions with a replace-by-fee feature.", "labels": ["feature", "gas", "transactions"] },
+              { "title": "⚠️ Bug: Stuck on confirming payment request", "body": "Confirm dialog sometimes never appears when a dApp requests payment via ethers.js.", "labels": ["bug", "UX", "dApp"] },
+              { "title": "📈 Feature: Gas tracker chart", "body": "Display historical gas trends to let users choose optimal gas price at send-time.", "labels": ["feature", "gas", "analytics"] },
+              { "title": "🐛 Bug: Extension fails to open on Firefox", "body": "MetaMask extension often fails to load popup on latest Firefox release.", "labels": ["bug", "extension", "Firefox"] },
+              { "title": "✏️ Feature: Custom token icons", "body": "Allow users to upload or select custom icons for tokens in their portfolio.", "labels": ["feature", "UI", "tokens"] },
+              { "title": "🔐 Bug: Private key export incorrectly masked", "body": "Copied private key has extra characters at beginning/end, causing paste errors.", "labels": ["bug", "security"] },
+              { "title": "📱 Bug: Mobile app crashes on startup", "body": "MetaMask mobile version crashes immediately after launch on Android 12.", "labels": ["bug", "mobile", "crash"] },
+              { "title": "💬 Feature: Transaction share link", "body": "Provide users a shareable link to view transaction details on explorer.", "labels": ["feature", "transactions"] },
+              { "title": "🐛 Bug: Undo failing reveals passphrase", "body": "Undoing the reveal passphrase action doesn’t re-mask the input field.", "labels": ["bug", "security", "UI"] },
+              { "title": "♻️ Feature: Asset portfolio rebalance alerts", "body": "Send alerts when portfolio allocation drifts beyond a configurable threshold.", "labels": ["feature", "portfolio", "alerts"] },
+              { "title": "🐛 Bug: Gas fee not displayed for custom token", "body": "Sending custom tokens doesn’t display estimated gas fee.", "labels": ["bug", "tokens", "gas"] },
+              { "title": "📄 Docs: Hardware wallet troubleshooting guide", "body": "Add troubleshooting steps for Ledger and Trezor connectivity issues.", "labels": ["documentation", "hardware-wallet"] },
+              { "title": "💡 Feature: Polygon PoS support", "body": "Integrate Polygon PoS network into MetaMask’s default network list.", "labels": ["feature", "network"] },
+              { "title": "🐛 Bug: Token price display incorrect", "body": "Some tokens show $0.00 even when pricing is available via API.", "labels": ["bug", "tokens", "price"] },
+              { "title": "🔎 Feature: Search for NFT assets", "body": "Enable users to search and filter their NFT collections inside MetaMask.", "labels": ["feature", "nft", "UI"] },
+              { "title": "🐛 Bug: Network name duplicates after update", "body": "Custom network entry duplicates itself after updating MetaMask.", "labels": ["bug", "network"] },
+              { "title": "📱 Feature: DApp control center", "body": "Provide a panel to manage dApp permissions, recent transactions, and active connections.", "labels": ["feature", "dApp", "UX"] },
+              { "title": "🐛 Bug: Error message lacks context", "body": "Generic 'Something went wrong' errors without detailed reason frustrate power-users.", "labels": ["bug", "UX"] },
+              { "title": "♿ Feature: Accessibility enhancements", "body": "Improve screen reader support, keyboard navigation, and focus indicators in UI.", "labels": ["feature", "accessibility"] },
+              { "title": "🐛 Bug: Fail to import wallet via QR on mobile", "body": "Scanning QR recovery phrase on mobile fails due to camera autofocus issue.", "labels": ["bug", "mobile", "wallet"] },
+              { "title": "🔐 Feature: Lock screen timeout setting", "body": "Enable users to configure automatic lock time interval after inactivity.", "labels": ["feature", "security"] },
+              { "title": "📈 Feature: Profit & loss tracker per token", "body": "Show realized and unrealized P&L based on purchase price and current value.", "labels": ["feature", "portfolio", "analytics"] },
+              { "title": "🐛 Bug: Infura rate limit error not shown", "body": "MetaMask hides Infura rate-limit errors, showing generic 'RPC Error'.", "labels": ["bug", "network"] },
+              { "title": "⚙️ Feature: Toggle between legacy and EIP-1559 fees", "body": "Offer manual mode switch for fee structure depending on network capability.", "labels": ["feature", "gas"] },
+              { "title": "🐛 Bug: Transaction pending status wrong", "body": "Transactions show confirmed even when they are still pending on chain.", "labels": ["bug", "transactions"] },
+              { "title": "💬 Feature: Inbox for in-app messages", "body": "Add an inbox for system alerts: updates, tips, warnings, security issues.", "labels": ["feature", "notifications"] },
+              { "title": "🔧 Chore: Update translations", "body": "Several components are missing translations or include typos.", "labels": ["chore", "i18n"] },
+              { "title": "🐛 Bug: dApp internal tx count mismatch", "body": "dApp shows incorrect transaction count for internal contract calls.", "labels": ["bug", "dApp"] },
+              { "title": "💡 Feature: Multiple accounts vault", "body": "Allow vault-style grouping of accounts for easier management.", "labels": ["feature", "accounts"] },
+              { "title": "🐛 Bug: Token import owner duplicate error", "body": "Importing a token already added results in duplicate entry error.", "labels": ["bug", "tokens"] },
+              { "title": "📦 Feature: Export transaction history CSV", "body": "Allow users to export history for tax purposes via CSV.", "labels": ["feature", "transactions"] },
+              { "title": "🚨 Bug: Abuse detection offline popup", "body": "Anti-phishing popup blocks offline sites incorrectly.", "labels": ["bug", "security"] },
+              { "title": "🔄 Feature: Support Balances API refresh", "body": "Provide API endpoint to refresh token balances manually via rpc.", "labels": ["feature", "api", "tokens"] },
+              { "title": "🐛 Bug: ERC-721 mint fails without error", "body": "Minting NFTs fails silently when user lacks network gas.", "labels": ["bug", "nft"] },
+              { "title": "📄 Docs: Add guide for gas fee tiers", "body": "Explain low / medium / high fee selection impact on confirmation times.", "labels": ["documentation", "gas"] },
+              { "title": "💡 Feature: Swap gas fee auto-optimization", "body": "Automatically estimate best gas fee based on current network congestion.", "labels": ["feature", "swap", "gas"] },
+              { "title": "🐛 Bug: Wallet connect session not restored", "body": "Connecting dApp via WalletConnect doesn't persist between sessions.", "labels": ["bug", "wallet", "session"] }
+            ];
+
+            const milestoneTitle = "v1.0";
+            const assignees = ["BreezeSup"];
+
+            const { data: milestones } = await github.rest.issues.listMilestones({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+
+            const milestone = milestones.find(m => m.title === milestoneTitle);
+            if (!milestone) {
+              throw new Error(`❌ Milestone '${milestoneTitle}' not found. Please create it on GitHub first.`);
+            }
+
+            for (const issue of issues) {
+              const response = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: issue.title,
+                body: issue.body,
+                labels: issue.labels || [],
+                assignees,
+                milestone: milestone.number
+              });
+
+              console.log(`✅ Created: ${response.data.title} — ${response.data.html_url}`);
+            }
